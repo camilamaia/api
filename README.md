@@ -1,2 +1,2 @@
-# testingbot-api
-Gem created for TestingBot challenge - Ruby Developer. 
+# TestingBot Client Api
+Gem created for TestingBot challenge - Ruby Developer.
