@@ -1,3 +1,9 @@
+require 'json'
+require "uri"
+require "net/http"
+require 'rspec'
+require "api/config"
+
 class Api
 
   VERSION = 1
@@ -107,7 +113,3 @@ class Api
     response = http.post(url.path, params.map { |k, v| "#{k.to_s}=#{v}" }.join("&"))
   end
 end
-
-require 'json'
-require "api/config"
-
