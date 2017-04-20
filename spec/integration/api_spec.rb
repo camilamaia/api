@@ -12,8 +12,9 @@ describe "Testingbot Api" do
     end
 
     it "should raise an error when wrong credentials are provided" do
-      @api = TestingBot::Api.new({ :client_key => "bogus", :client_secret => "false" })
-      lambda { @api.get_user_info }.should raise_error(RuntimeError, /^401 Unauthorized/)
+      Api.config = { :client_key => "bogus", :client_secret => "false" }
+      lambda { Api::User.get_info }.should raise_error(RuntimeError, /^401 Unauthorized/)
+      Api.reset_config!
     end
   end
 

@@ -14,6 +14,10 @@ module Api
     self.get_config
   end
 
+  def self.config=(opts)
+    @config = Api::Config.new(opts)
+  end
+
   class Config
 
     def initialize(options = {})
