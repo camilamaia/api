@@ -84,9 +84,9 @@ class Config
     end
 
     if is_windows
-      config_file = "#{ENV['HOMEDRIVE']}\\.testingbot"
+      config_file = "#{ENV['HOMEDRIVE']}\\.testingbot_api"
     else
-      config_file = File.expand_path("~/.testingbot")
+      config_file = File.expand_path("~/.testingbot_api")
     end
 
     if File.exists?(config_file)
