@@ -1,7 +1,20 @@
 module Api
-  class Config
 
-    attr_reader :options
+  @config = nil
+  def self.get_config
+    @config = Api::Config.new if @config.nil?
+    @config
+  end
+
+  def self.reset_config!
+    @config = nil
+  end
+
+  def self.config
+    self.get_config
+  end
+
+  class Config
 
     def initialize(options = {})
       @options = default_options
