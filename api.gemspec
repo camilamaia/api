@@ -1,8 +1,10 @@
 # -*- encoding: utf-8 -*-
+$:.push File.expand_path("../lib", __FILE__)
+require "api/version"
 
 Gem::Specification.new do |s|
   s.name        = 'api'
-  s.version     = '0.0.0' #FIXME
+  s.version     = Api::VERSION
   s.summary     = "TestingBot Client Api"
   s.description = "Gem created for TestingBot challenge - Ruby Developer."
   s.authors     = ["Camila Maia"]

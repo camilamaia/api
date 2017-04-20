@@ -3,6 +3,7 @@ require "uri"
 require "net/http"
 require 'rspec'
 require "api/config"
+require "api/version"
 
 class Api
 
@@ -12,7 +13,7 @@ class Api
   attr_reader :config
 
   def initialize(opts = {})
-    @config = Config.new(opts)
+    @config = Api::Config.new(opts)
   end
 
   def get_user_info
