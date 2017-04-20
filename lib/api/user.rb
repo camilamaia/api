@@ -1,10 +1,10 @@
 module Api
   module User
-    def self.get_user_info
+    def self.get_info
       Api::RequestBuilder.get("/user")
     end
 
-    def self.update_user_info(params = {})
+    def self.update_info(params = {})
       new_params = {}
       params.keys.each do |key|
         new_params["user[#{key}]"] = params[key]

@@ -1,6 +1,6 @@
 module Api
   module Tests
-    def self.get_tests(offset = 0, count = 10)
+    def self.get_all(offset = 0, count = 10)
       Api::RequestBuilder.get("/tests?offset=#{offset}&count=#{count}")
     end
 
