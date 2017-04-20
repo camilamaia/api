@@ -18,6 +18,14 @@ module Api
     @config = Api::Config.new(opts)
   end
 
+  def self.client_key
+    Api.config[:client_key]
+  end
+
+  def self.client_secret
+    Api.config[:client_secret]
+  end
+
   class Config
 
     def initialize(options = {})
