@@ -1,5 +1,5 @@
 require 'json'
-require "net/http"
+require "rest-client"
 require 'rspec'
 require "uri"
 
