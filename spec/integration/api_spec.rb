@@ -42,7 +42,12 @@ describe "Testingbot Api" do
     end
 
     it "should fail when trying to access a test that is not mine" do
-      lambda { Api::Tests.get_single_test(123423423423423) }.should raise_error(RuntimeError, /^404 Not Found./)
+      begin
+        Api::Tests.get_single_test(123423423423423)
+      rescue RestClient::ResourceNotFound => e
+        expect(e.http_code).to eq 404
+        expect(e.response.code).to eq 404
+      end
     end
   end
 
@@ -59,7 +64,13 @@ describe "Testingbot Api" do
     end
 
     it "should not update a test that is not mine" do
-      lambda { Api::Tests.update_test(123423423423423, { :name => "testingbot" }) }.should raise_error(RuntimeError, /^404 Not Found./)
+      begin
+        Api::Tests.update_test(123423423423423, { :name => "testingbot" })
+        raise
+      rescue RestClient::ResourceNotFound => e
+        expect(e.http_code).to eq 404
+        expect(e.response.code).to eq 404
+      end
     end
   end
 
@@ -74,7 +85,12 @@ describe "Testingbot Api" do
     end
 
     it "should not delete a test that is not mine" do
-      lambda { Api::Tests.delete_test(123423423423423) }.should raise_error(RuntimeError, /^404 Not Found./)
+      begin
+        Api::Tests.delete_test(123423423423423)
+      rescue RestClient::ResourceNotFound => e
+        expect(e.http_code).to eq 404
+        expect(e.response.code).to eq 404
+      end
     end
   end
 end

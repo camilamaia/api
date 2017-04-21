@@ -1,12 +1,8 @@
 module Api
   module RequestBuilder
     def self.get(url)
-      uri = URI(Api.url + '/v' + Api.version.to_s + url)
-      req = Net::HTTP::Get.new(uri.request_uri)
-      req.basic_auth Api.config[:client_key], Api.config[:client_secret]
-      res = Net::HTTP.start(uri.host, uri.port, :use_ssl => true) {|http|
-        http.request(req)
-      }
+      params = {:method => :get, :url => full_url(url)}
+      res    = make_request(params)
 
       parsed = JSON.parse(res.body)
 
@@ -18,13 +14,14 @@ module Api
     end
 
     def self.put(url, params = {})
-      uri = URI(Api.url + '/v' + Api.version.to_s + url)
-      req = Net::HTTP::Put.new(uri.request_uri)
-      req.basic_auth Api.config[:client_key], Api.config[:client_secret]
-      req.set_form_data(params)
-      res = Net::HTTP.start(uri.host, uri.port, :use_ssl => true) {|http|
-        http.request(req)
+      params = {
+        :method => :put,
+        :url => full_url(url),
+        :payload => params,
+        :content_type => :json
       }
+
+      res = make_request(params)
 
       parsed = JSON.parse(res.body)
 
@@ -36,13 +33,8 @@ module Api
     end
 
     def self.delete(url, params = {})
-      uri = URI(Api.url + '/v' + Api.version.to_s + url)
-      req = Net::HTTP::Delete.new(uri.request_uri)
-      req.basic_auth Api.config[:client_key], Api.config[:client_secret]
-      req.set_form_data(params)
-      res = Net::HTTP.start(uri.host, uri.port, :use_ssl => true) {|http|
-        http.request(req)
-      }
+      params.merge!({:method => :delete, :url => full_url(url)})
+      res = make_request(params)
 
       parsed = JSON.parse(res.body)
 
@@ -54,11 +46,30 @@ module Api
     end
 
     def self.post(url, params = {})
-      url = URI.parse(Api.url + '/v' + Api.version + url)
-      http = Net::HTTP.new(url.host, url.port)
-      http.use_ssl = true
-      http.basic_auth Api.config[:client_key], Api.config[:client_secret]
-      response = http.post(url.path, params.map { |k, v| "#{k.to_s}=#{v}" }.join("&"))
+      params = {
+        :method => :post,
+        :url => full_url(url),
+        :payload => params,
+        :content_type => :json
+      }
+      res = make_request(params)
+    end
+
+    def self.make_request req_params
+      begin
+        RestClient::Request.execute req_params.merge auth_details
+      rescue RestClient::Unauthorized, RestClient::Forbidden => err
+        puts 'Access denied'
+        return err.response
+      end
+    end
+
+    def self.auth_details
+      {:user => Api.client_key, :password => Api.client_secret}
+    end
+
+    def self.full_url url
+      "#{Api.url}/v#{Api.version.to_s}".concat(url)
     end
   end
 end
