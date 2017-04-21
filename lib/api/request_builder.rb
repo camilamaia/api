@@ -2,15 +2,7 @@ module Api
   module RequestBuilder
     def self.get(url)
       params = {:method => :get, :url => full_url(url)}
-      res    = make_request(params)
-
-      parsed = JSON.parse(res.body)
-
-      if !parsed["error"].nil? && !parsed["error"].empty?
-        raise parsed["error"]
-      end
-
-      parsed
+      make_request(params)
     end
 
     def self.put(url, params = {})
@@ -20,29 +12,12 @@ module Api
         :payload => params,
         :content_type => :json
       }
-
-      res = make_request(params)
-
-      parsed = JSON.parse(res.body)
-
-      if !parsed["error"].nil? && !parsed["error"].empty?
-        raise parsed["error"]
-      end
-
-      parsed
+      make_request(params)
     end
 
     def self.delete(url, params = {})
       params.merge!({:method => :delete, :url => full_url(url)})
-      res = make_request(params)
-
-      parsed = JSON.parse(res.body)
-
-      if !parsed["error"].nil? && !parsed["error"].empty?
-        raise parsed["error"]
-      end
-
-      parsed
+      make_request(params)
     end
 
     def self.post(url, params = {})
@@ -52,14 +27,18 @@ module Api
         :payload => params,
         :content_type => :json
       }
-      res = make_request(params)
+      make_request(params)
     end
 
     def self.make_request req_params
       begin
-        RestClient::Request.execute req_params.merge auth_details
+        res = RestClient::Request.execute req_params.merge auth_details
+        JSON.parse(res.body)
       rescue RestClient::Unauthorized, RestClient::Forbidden => err
         puts 'Access denied'
+        return err.response
+      rescue RestClient::ResourceNotFound => err
+        puts 'Resource not found'
         return err.response
       end
     end

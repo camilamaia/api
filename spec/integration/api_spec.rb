@@ -13,7 +13,12 @@ describe "Testingbot Api" do
 
     it "should raise an error when wrong credentials are provided" do
       Api.config = { :client_key => "bogus", :client_secret => "false" }
-      lambda { Api::User.get_info }.should raise_error(RuntimeError, /^401 Unauthorized/)
+      begin
+        Api::User.get_info
+      rescue RestClient::Unauthorized => e
+        expect(e.http_code).to eq 401
+        expect(e.response.code).to eq 401
+      end
       Api.reset_config!
     end
   end
@@ -66,7 +71,6 @@ describe "Testingbot Api" do
     it "should not update a test that is not mine" do
       begin
         Api::Tests.update_test(123423423423423, { :name => "testingbot" })
-        raise
       rescue RestClient::ResourceNotFound => e
         expect(e.http_code).to eq 404
         expect(e.response.code).to eq 404
@@ -80,7 +84,12 @@ describe "Testingbot Api" do
       if data.length > 0
         test_id = data.first["id"]
         @api.delete_test(test_id).should == true
-        lambda { Api::Tests.get_single_test(test_id) }.should raise_error(RuntimeError, /^404 Not Found./)
+        begin
+          Api::Tests.get_single_test(test_id)
+        rescue RestClient::ResourceNotFound => e
+          expect(e.http_code).to eq 404
+          expect(e.response.code).to eq 404
+        end
       end
     end
 
