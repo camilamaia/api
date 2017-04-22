@@ -26,6 +26,7 @@ After you installed the gem you need to run a one part setup. Type api in your c
 ### Configurations
 
 ``` ruby
+ $ require 'api'
  $ Api.config
  $ Api.config = { :client_key => "bogus", :client_secret => "0000" }
  $ Api.reset_config!
@@ -34,6 +35,7 @@ After you installed the gem you need to run a one part setup. Type api in your c
 ### User
 
 ``` ruby
+ $ require 'api'
  $ Api::User.get_info
  $ Api::User.update_info({ "first_name" => new_name })
 ```
@@ -41,17 +43,19 @@ After you installed the gem you need to run a one part setup. Type api in your c
 ### Tests
 
 ``` ruby
+ $ require 'api'
  $ Api::Tests.get_all
- $ Api::Tests.get_single_test(123423423423423)
- $ Api::Tests.delete_test(123423423423423)
+ $ Api::Tests.get_single_test(123423423423423) # where 123423423423423 is the test id
+ $ Api::Tests.delete_test(123423423423423) # where 123423423423423 is the test id
 ```
 
 ### TestLab tests
 
 ``` ruby
+ $ require 'api'
  $ Api::TestlabTests.get_all
- $ Api::TestlabTests.get_single_test(123423423423423)
- $ Api::TestlabTests.delete_test(123423423423423)
+ $ Api::TestlabTests.get_single_test(123423423423423)  # where 123423423423423 is the test id
+ $ Api::TestlabTests.delete_test(123423423423423) # where 123423423423423 is the test id
 ```
 
 ## Test this gem
