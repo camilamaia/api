@@ -10,7 +10,7 @@ module Api
         new_params["user[#{key}]"] = params[key]
       end
       response = Api::RequestBuilder.put("/user", new_params)
-      response["success"]
+      response['error'] ? response : response["success"]
     end
   end
 end

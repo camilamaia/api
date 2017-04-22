@@ -14,12 +14,12 @@ module Api
         new_params["test[#{key}]"] = params[key]
       end
       response = Api::RequestBuilder.put("/tests/#{test_id}", new_params)
-      response["success"]
+      response['error'] ? response : response["success"]
     end
 
     def self.delete_test(test_id)
       response = Api::RequestBuilder.delete("/tests/#{test_id}")
-      response["success"]
+      response['error'] ? response : response["success"]
     end
   end
 end
