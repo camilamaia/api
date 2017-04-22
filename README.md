@@ -46,6 +46,14 @@ After you installed the gem you need to run a one part setup. Type api in your c
  $ Api::Tests.delete_test(123423423423423)
 ```
 
+### TestLab tests
+
+``` ruby
+ $ Api::TestlabTests.get_all
+ $ Api::TestlabTests.get_single_test(123423423423423)
+ $ Api::TestlabTests.delete_test(123423423423423)
+```
+
 ## Test this gem
 
 The tests for this gem are located in the spec folder, you can run them with this Rake task:
