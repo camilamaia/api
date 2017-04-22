@@ -6,6 +6,7 @@ require "uri"
 require "api/config"
 require "api/request_builder"
 require "api/tests"
+require "api/testlab_tests"
 require "api/user"
 require "api/version"
 

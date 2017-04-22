@@ -34,12 +34,8 @@ module Api
       begin
         res = RestClient::Request.execute req_params.merge auth_details
         JSON.parse(res.body)
-      rescue RestClient::Unauthorized, RestClient::Forbidden => err
-        puts 'Access denied'
-        return err.response
-      rescue RestClient::ResourceNotFound => err
-        puts 'Resource not found'
-        return err.response
+      rescue RestClient::Exception => err
+        JSON.parse(err.response)
       end
     end
 
